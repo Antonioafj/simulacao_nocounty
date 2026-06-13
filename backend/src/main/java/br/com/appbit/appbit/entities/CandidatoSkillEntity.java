@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CandidateSkillEntity {
+public class CandidatoSkillEntity {
 
     @EmbeddedId
     private CandidatoSkillId id = new CandidatoSkillId();
