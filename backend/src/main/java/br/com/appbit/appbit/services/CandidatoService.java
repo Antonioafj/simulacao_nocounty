@@ -1,94 +1,112 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.CandidatoCreateDTO;
+import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.entities.CandidatoEntity;
+import br.com.appbit.appbit.entities.RegiaoEntity;
 import br.com.appbit.appbit.mappers.CandidatoMapper;
 import br.com.appbit.appbit.repositories.CandidatoRepository;
+import br.com.appbit.appbit.repositories.RegiaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-//@Service
-//@RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class CandidatoService {
 
-//    private final CandidatoRepository candidatoRepository;
-//
-//    private final CandidatoMapper candidatoMapper;
-//
-//    public CandidatoCreateDTO createCanditado(CandidatoCreateDTO barberDto){
-//
-//        BarbershopEntity barbershop = barberShopRepository.findById(barberDto.barbershopId()).orElse(null);
-//
-//        if (barbershop == null){
-//            throw new RuntimeException("Barbershop not found");
-//        }
-//
-//        BarberEntity barber = candidatoMapper.toBarberEntity(barberDto);
-//
-//        barber.setBarbershop(barbershop);
-//
-//        BarberEntity savedBarber = candidatoRepository.save(barber);
-//
-//        return candidatoMapper.toBarberDto(savedBarber);
-//    }
-//
-//    public List<BarberDto> listAllBarber(){
-//        List<BarberEntity> barberList = candidatoRepository.findAll();
-//        List<BarberDto> barberDtoList = new ArrayList<>();
-//
-//        for (BarberEntity barber : barberList) {
-//
-//            BarberDto barberDto= candidatoMapper.toBarberDto(barber);
-//
-//            barberDtoList.add(barberDto);
-//        }
-//        return barberDtoList;
-//    }
-//
-//    public BarberDto getBarberById(Long barberId){
-//
-//        BarberEntity barber = candidatoRepository.findById(barberId).orElse(null);
-//
-//        if (barber == null){
-//            throw  new RuntimeException("Barber not found");
-//        }
-//
-//        BarberDto barberDto = candidatoMapper.toBarberDto(barber);
-//
-//        return barberDto;
-//    }
-//
-//    public BarberDto updateBarberById(BarberDto barberDto, Long barberId){
-//
-//        BarberEntity barber = candidatoRepository.findById(barberId).orElse(null);
-//
-//        if (barber == null){
-//            throw  new RuntimeException("Barber not found");
-//        }
-//
-//        barber.setName(barberDto.name());
-//        barber.setTelephone(barberDto.telephone());
-//        barber.setEmail(barberDto.email());
-//
-//        candidatoRepository.save(barber);
-//
-//        return candidatoMapper.toBarberDto(barber);
-   // }
+    private final CandidatoRepository candidatoRepository;
+
+    private final RegiaoRepository regiaoRepository;
 
 
-//    public void deleteBarberById( Long barberId ){
-//
-//        BarberEntity barber = candidatoRepository.findById(barberId).orElse(null);
-//
-//        if (barber == null){
-//
-//            throw  new RuntimeException("Barber not found");
-//
-//        }
-//
-//        candidatoRepository.delete(barber);
+    private final CandidatoMapper candidatoMapper;
 
+    public CandidatoResponseDTO createCandidato(CandidatoCreateDTO createDTO){
+
+
+        RegiaoEntity regiao = regiaoRepository.findById(createDTO.regiaoId()).orElse(null);
+
+        if (regiao == null){
+            throw new RuntimeException("Regiao Não Encontrada");
+        }
+
+
+        CandidatoEntity candidato = candidatoMapper.toEntity(createDTO);
+
+        candidato.setRegiao(regiao);
+
+        CandidatoEntity candidatoSave = candidatoRepository.save(candidato);
+
+        return candidatoMapper.toResponseDTO(candidatoSave);
+    }
+
+    public List<CandidatoResponseDTO> listAllCandidato(){
+        List<CandidatoEntity> candidatoList = candidatoRepository.findAll();
+        List<CandidatoResponseDTO> candidatoResponseDTOS = new ArrayList<>();
+
+        for (CandidatoEntity candidato : candidatoList) {
+
+            CandidatoResponseDTO responseDTO= candidatoMapper.toResponseDTO(candidato);
+
+            candidatoResponseDTOS.add(responseDTO);
+        }
+        return candidatoResponseDTOS;
+    }
+
+    public CandidatoResponseDTO getCandidatoById(Integer candidatoId){
+
+        CandidatoEntity candidato = candidatoRepository.findById(candidatoId).orElse(null);
+
+        if (candidato == null){
+            throw  new RuntimeException("Candidato não encontrado");
+        }
+
+        CandidatoResponseDTO responseDTO = candidatoMapper.toResponseDTO(candidato);
+
+        return responseDTO;
+    }
+
+    public CandidatoResponseDTO updateCandidatoById(CandidatoUpdateDTO updateDTO, Integer candidatoId){
+
+        CandidatoEntity candidato = candidatoRepository.findById(candidatoId).orElse(null);
+
+        if (candidato == null){
+            throw  new RuntimeException("Candidato não encontrado");
+        }
+
+        RegiaoEntity regiao = regiaoRepository.findById(updateDTO.regiaoId()).orElse(null);
+
+        if (regiao == null){
+            throw new RuntimeException("Regiao Não Encontrado");
+        }
+
+        candidato.setNome(updateDTO.nome());
+        candidato.setCargo(updateDTO.cargo());
+        candidato.setNivel(updateDTO.nivel());
+        candidato.setCluster(updateDTO.cluster());
+        candidato.setMunicipio(updateDTO.municipio());
+        candidato.setGrupo(updateDTO.grupo());
+        candidato.setDiversidade(updateDTO.diversidade());
+        candidato.setDisponibilidade(updateDTO.disponibilidade());
+        candidato.setAtivo(updateDTO.ativo());
+        candidato.setRegiao(regiao);
+
+        CandidatoEntity candidatoAtualizada =   candidatoRepository.save(candidato);
+
+        return candidatoMapper.toResponseDTO(candidatoAtualizada);
+    }
+
+    public void deleteCandidatoById( Integer candidatoId ){
+
+        CandidatoEntity candidato = candidatoRepository.findById(candidatoId).orElse(null);
+
+        if (candidato == null){
+
+            throw  new RuntimeException("Candidato não encontrado");
+        }
+
+        candidatoRepository.delete(candidato);
+    }
 }

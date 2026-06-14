@@ -70,7 +70,6 @@ public class RegiaoService {
         regiao.setLongitude(updateDTO.longitude());
         regiao.setPerfil(updateDTO.perfil());
         regiao.setFonte(updateDTO.fonte());
-        regiaoRepository.save(regiao);
 
         RegiaoEntity regiaoAtualizada =   regiaoRepository.save(regiao);
 

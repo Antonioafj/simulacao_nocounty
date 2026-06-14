@@ -16,6 +16,4 @@ public interface RegiaoMapper {
 
     RegiaoResponseDTO toResponseDTO(RegiaoEntity entity);
 
-
-    RegiaoUpdateDTO toUpdateDTO(RegiaoCreateDTO dto);
 }

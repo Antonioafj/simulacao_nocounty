@@ -22,7 +22,4 @@ public interface CandidatoMapper {
     CandidatoResponseDTO toResponseDTO(CandidatoEntity entity);
 
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "regiao", ignore = true)
-    CandidatoEntity toUpdateEntity(CandidatoUpdateDTO dto);
 }
