@@ -11,7 +11,8 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CandidatoSkillMapper {
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "id.candidatoId", source = "candidatoId")
+    @Mapping(target = "id.skillId", source = "skillId")
     @Mapping(target = "candidato", ignore = true)
     @Mapping(target = "skill", ignore = true)
     CandidatoSkillEntity toEntity(CandidatoSkillCreateDTO dto);

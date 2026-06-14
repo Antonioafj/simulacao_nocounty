@@ -4,5 +4,5 @@ import br.com.appbit.appbit.entities.CandidatoSkillEntity;
 import br.com.appbit.appbit.entities.CandidatoSkillId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CandidateSkillRepository extends JpaRepository<CandidatoSkillEntity, CandidatoSkillId> {
+public interface CandidatoSkillRepository extends JpaRepository<CandidatoSkillEntity, CandidatoSkillId> {
 }
